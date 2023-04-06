@@ -1,0 +1,26 @@
+name: Deploy CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Deploy
+        uses: D3rHase/ssh-command-action@v0.2.1
+        with:
+          # hostname / IP of the server
+          HOST: ${{secrets.HOST}}
+          # user of the server
+          USER: ${{secrets.USER}}
+          # private ssh key registered on the server
+          PRIVATE_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          # command to be executed
+          COMMAND: ./deploy-fizcult.sh
