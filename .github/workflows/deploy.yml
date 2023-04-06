@@ -23,4 +23,4 @@ jobs:
           # private ssh key registered on the server
           PRIVATE_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           # command to be executed
-          COMMAND: ./deploy-fizcult.sh
+          COMMAND: ./deploy-fizcult-backend.sh
