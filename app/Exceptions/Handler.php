@@ -2,10 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Http\Response\Formatter\ExceptionFormatter;
+use App\Services\Exception\AbstractApplicationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -23,6 +27,10 @@ class Handler extends ExceptionHandler
         ValidationException::class,
     ];
 
+    public function __construct(private ExceptionFormatter $exceptionFormatter)
+    {
+    }
+
     /**
      * Report or log an exception.
      *
@@ -35,6 +43,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
+        if ($exception instanceof AbstractApplicationException) {
+            return;
+        }
+
         parent::report($exception);
     }
 
@@ -49,6 +61,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        if ($exception instanceof AbstractApplicationException) {
+            return $this->exceptionFormatter->format($exception);
+        }
+
+        return new JsonResponse([
+            'error' => $exception->getMessage(),
+            'result' => false
+        ], $this->getCode($exception));
+
+//        return parent::render($request, $exception);
+    }
+
+    private function getCode(Throwable $exception): int
+    {
+        if ($exception instanceof ValidationException) {
+            return Response::HTTP_BAD_REQUEST;
+        }
+
+        return Response::HTTP_INTERNAL_SERVER_ERROR;
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ProlongAuthKeyIfNeededMiddleware;
 use App\Providers\CacheServiceProvider;
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -61,6 +62,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('cache');
 
 /*
 |--------------------------------------------------------------------------
@@ -73,9 +75,9 @@ $app->configure('app');
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    ProlongAuthKeyIfNeededMiddleware::class
+]);
 
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
@@ -96,6 +98,7 @@ $app->configure('app');
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(CacheServiceProvider::class);
+$app->register(Urameshibr\Providers\LumenFormRequestServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -110,7 +113,7 @@ $app->register(CacheServiceProvider::class);
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
-], function ($router) {
+], static function ($router) {
     require __DIR__.'/../routes/web.php';
 });
 
