@@ -11,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -77,6 +78,10 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ValidationException) {
             return Response::HTTP_BAD_REQUEST;
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return Response::HTTP_METHOD_NOT_ALLOWED;
         }
 
         return Response::HTTP_INTERNAL_SERVER_ERROR;
