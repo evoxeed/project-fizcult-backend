@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -19,7 +20,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email',
+        'login', 'name', 'token'
     ];
 
     /**
@@ -28,6 +29,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $hidden = [
-        'password',
+        'password'
     ];
+
+    public $timestamps = false;
+
+    public function workouts(){
+        return $this->hasMany(Workout::class);
+    }
+
+    public function getUserAttributesData(){
+        return Attribute::with(['programs.levels.exercises.workouts' => function ($query) {
+            $query->where('workouts.user_id', $this->id);
+        }])->get();
+    }
 }
