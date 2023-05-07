@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use App\UserInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Auth\Authorizable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends Model implements UserInterface, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
 
@@ -43,8 +43,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected function password(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value,
-            set: fn (string $value) => Hash::make($value),
+            get: static fn (string $value) => $value,
+            set: static fn (string $value) => Hash::make($value),
         );
     }
 }

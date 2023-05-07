@@ -12,6 +12,6 @@ class AuthKeyGeneratorService
      */
     public function generateAuthKey(int $userId): string
     {
-        return 'u' . $userId . 'r' . md5(Str::random());
+        return 'u' . $userId . 'r' . sha1(Str::random());
     }
 }

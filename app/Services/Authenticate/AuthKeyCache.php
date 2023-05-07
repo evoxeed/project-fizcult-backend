@@ -24,7 +24,7 @@ class AuthKeyCache
      */
     public function set(string $authKey, int $userId): void
     {
-        $this->cache->set($authKey, $userId, time() + $this->keyCacheTTLInSeconds);
+        $this->cache->set($authKey, $userId, $this->keyCacheTTLInSeconds);
     }
 
     /**
@@ -52,7 +52,7 @@ class AuthKeyCache
      * @return ?int
      * @throws InvalidArgumentException
      */
-    private function getUserId(string $authKey): ?int
+    public function getUserId(string $authKey): ?int
     {
         return (int) $this->cache->get($authKey);
     }
@@ -69,6 +69,6 @@ class AuthKeyCache
         }
 
         $value = $this->getUserId($authKey);
-        $this->cache->set($authKey, $value, time() + $this->keyCacheTTLInSeconds);
+        $this->cache->set($authKey, $value, $this->keyCacheTTLInSeconds);
     }
 }

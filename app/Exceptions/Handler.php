@@ -7,6 +7,7 @@ use App\Services\Exception\AbstractApplicationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,20 +71,19 @@ class Handler extends ExceptionHandler
             'error' => $exception->getMessage(),
             'result' => false
         ], $this->getCode($exception));
-
-//        return parent::render($request, $exception);
     }
 
+    /**
+     * @param Throwable $exception
+     * @return int
+     */
     private function getCode(Throwable $exception): int
     {
-        if ($exception instanceof ValidationException) {
-            return Response::HTTP_BAD_REQUEST;
-        }
-
-        if ($exception instanceof MethodNotAllowedHttpException) {
-            return Response::HTTP_METHOD_NOT_ALLOWED;
-        }
-
-        return Response::HTTP_INTERNAL_SERVER_ERROR;
+        return match (true) {
+            $exception instanceof ValidationException => Response::HTTP_BAD_REQUEST,
+            $exception instanceof MethodNotAllowedHttpException => Response::HTTP_METHOD_NOT_ALLOWED,
+            $exception instanceof UnauthorizedException => Response::HTTP_UNAUTHORIZED,
+            default => Response::HTTP_INTERNAL_SERVER_ERROR
+        };
     }
 }

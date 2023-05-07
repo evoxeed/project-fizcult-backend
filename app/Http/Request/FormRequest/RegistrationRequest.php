@@ -10,8 +10,8 @@ class RegistrationRequest extends SimpleRequest
     public function rules(): array
     {
         return [
-            'login' => ['required', 'string', 'unique:user'],
-            'password' => ['required', 'min:6'],
+            'login' => ['required', 'string', 'max:500', 'unique:user'],
+            'password' => ['required', 'min:6', 'max:500'],
             'first_name' => ['min:3'],
             'last_name' => ['min:3'],
         ];

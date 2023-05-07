@@ -1,6 +1,6 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router */
+/** @var Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +13,16 @@
 |
 */
 
+use App\Http\Middleware\Authenticate;
+use Laravel\Lumen\Routing\Router;
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('test', 'TestController@test');
+$router->group(['middleware' => Authenticate::class], static function (Router $router) {
+    $router->get('test', 'TestController@test');
+});
+
 $router->post('login', 'SignInController@signIn');
 $router->post('registration', 'RegistrationController@register');
