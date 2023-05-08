@@ -14,16 +14,22 @@
 */
 
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CorsMiddleware;
 use Laravel\Lumen\Routing\Router;
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['middleware' => Authenticate::class], static function (Router $router) {
-    $router->get('test', 'TestController@test');
-});
+$router->group(['middleware' => CorsMiddleware::class], static function (Router $router) {
+    $router->options('/{any:.*}', static function (Router $router) {
+        return response(['status' => 'success']);
+    });
 
-$router->post('login', 'SignInController@signIn');
-$router->post('registration', 'RegistrationController@register');
-$router->options('registration', 'RegistrationController@register');
+    $router->group(['middleware' => Authenticate::class], static function (Router $router) {
+        $router->get('test', 'TestController@test');
+    });
+
+    $router->post('login', 'SignInController@signIn');
+    $router->post('registration', 'RegistrationController@register');
+});
