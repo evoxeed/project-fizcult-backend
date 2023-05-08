@@ -26,3 +26,4 @@ $router->group(['middleware' => Authenticate::class], static function (Router $r
 
 $router->post('login', 'SignInController@signIn');
 $router->post('registration', 'RegistrationController@register');
+$router->options('registration', 'RegistrationController@register');
