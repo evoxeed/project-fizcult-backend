@@ -25,11 +25,11 @@ $router->group(['middleware' => CorsMiddleware::class], static function (Router 
     $router->options('/{any:.*}', static function (Router $router) {
         return response();
     });
-});
 
-$router->group(['middleware' => Authenticate::class], static function (Router $router) {
-    $router->get('test', 'TestController@test');
-});
+    $router->group(['middleware' => Authenticate::class], static function (Router $router) {
+        $router->get('test', 'TestController@test');
+    });
 
-$router->post('login', 'SignInController@signIn');
-$router->post('registration', 'RegistrationController@register');
+    $router->post('login', 'SignInController@signIn');
+    $router->post('registration', 'RegistrationController@register');
+});
