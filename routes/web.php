@@ -22,10 +22,6 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['middleware' => CorsMiddleware::class], static function (Router $router) {
-    $router->options('/{any:.*}', static function (Router $router) {
-        return response();
-    });
-
     $router->group(['middleware' => Authenticate::class], static function (Router $router) {
         $router->get('test', 'TestController@test');
     });
