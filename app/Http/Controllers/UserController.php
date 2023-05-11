@@ -6,7 +6,7 @@ use App\Http\Response\Formatter\UserFormatter;
 use App\UserInterface;
 use Laravel\Lumen\Routing\Controller;
 
-class TestController extends Controller
+class UserController extends Controller
 {
     /**
      * @param UserInterface $user
