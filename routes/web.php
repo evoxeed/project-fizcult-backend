@@ -31,6 +31,7 @@ $router->group(['middleware' => CorsMiddleware::class], static function (Router 
         $router->get('user-info', 'UserController@info');
         $router->get('skills', 'SkillController@get');
         $router->get('level/{skill}', 'LevelController@get');
+        $router->get('level/{skill}/{level}', 'LevelController@level');
     });
 
     $router->post('login', 'SignInController@signIn');
