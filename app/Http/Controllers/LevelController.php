@@ -10,78 +10,188 @@ use App\Services\User\AllUserLessonsService;
 
 class LevelController extends Controller
 {
+
     /**
      *
      * 
      */
     public function __construct(
     ) {
+        
+    }
+
+    public function level($skill, $level): array
+    {
+        return 
+        [
+            'level' => $this->levels[$skill][$level],
+        ];
     }
 
     public function get($skill): array
     {
         if ($skill == 1) {
             return [
-                'level' => (object) [
-                    'id' => 1,
-                    'index' => 1,
-                    'valueMin' => 20,
-                    'valueMax' => 100,
-                    'valueName' => 'мин',
-                    'workouts' => [
-                        (object) [
-                            'id' => 1,
-                            'name' => 'Челночный бег 5x20',
-                            'description' => 'Перерыв 5 минут',
-                            'video' => 'url1'
-                        ],
-                        (object) [
-                            'id' => 2,
-                            'name' => 'Челночный бег 5x30',
-                            'description' => 'Перерыв 5 минут',
-                            'video' => 'url2'
-                        ],
-                        (object) [
-                            'id' => 3,
-                            'name' => 'Бег 1 км',
-                            'description' => 'В среднем темпе',
-                            'video' => 'url3'
-                        ]
-                    ]
-                ]
+                'level' => $this->levels[1][1],
             ];
         }
         elseif($skill=2)
         {
             return [
-                'level' => (object) [
-                    'id' => 1,
-                    'index' => 1,
-                    'valueMin' => 40,
-                    'valueMax' => 60,
-                    'valueName' => 'кг',
-                    'workouts' => [
-                        (object) [
-                            'id' => 4,
-                            'name' => 'Жим лежа x8',
-                            'description' => 'Перерыв 5 минут',
-                            'video' => 'url4'
-                        ],
-                        (object) [
-                            'id' => 5,
-                            'name' => 'Присяд x16',
-                            'description' => 'Перерыв 5 минут',
-                            'video' => 'url5'
-                        ],
-                        (object) [
-                            'id' => 6,
-                            'name' => 'Бег 1 км',
-                            'description' => 'В среднем темпе',
-                            'video' => 'url3'
-                        ]
-                    ]
-                ]
+                'level' => $this->levels[1][2],
             ];
         }
     }
-}
+
+    private $levels = [
+        "1" => [
+            "1" => [
+                'index' => 1,
+                'description' => 'Описание уровня',
+                'valueMin' => 20,
+                'valueMax' => 100,
+                'valueName' => 'мин',
+                'workouts' => [
+                    [
+                        'name' => 'Челночный бег 5x20',
+                        'description' => 'Перерыв 5 минут',
+                        'video' => 'url1'
+                    ],
+                    [
+                        'name' => 'Челночный бег 5x30',
+                        'description' => 'Перерыв 5 минут',
+                        'video' => 'url2'
+                    ],
+                    [
+                        'name' => 'Бег 1 км',
+                        'description' => 'В среднем темпе',
+                        'video' => 'url3'
+                    ]
+                ]
+            ],
+        "2" => [
+            'index' => 2,
+            'description' => 'Описание уровня',
+            'valueMin' => 18,
+            'valueMax' => 20,
+            'valueName' => 'мин',
+            'workouts' => [
+                [
+                    'name' => 'Челночный бег 5x20',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url1'
+                ],
+                [
+                    'name' => 'Челночный бег 5x30',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url2'
+                ],
+                [
+                    'name' => 'Бег 1 км',
+                    'description' => 'В среднем темпе',
+                    'video' => 'url3'
+                ]
+            ]
+        ],
+        "3" => [
+            'index' => 3,
+            'description' => 'Описание уровня',
+            'valueMin' => 15,
+            'valueMax' => 18,
+            'valueName' => 'мин',
+            'workouts' => [
+                [
+                    'name' => 'Челночный бег 5x20',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url1'
+                ],
+                [
+                    'name' => 'Челночный бег 5x30',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url2'
+                ],
+                [
+                    'name' => 'Бег 1 км',
+                    'description' => 'В среднем темпе',
+                    'video' => 'url3'
+                ]
+            ]
+        ]
+        ],
+        "2" => [
+            "1" => [
+                'index' => 1,
+                'description' => 'Описание уровня',
+                'valueMin' => 40,
+                'valueMax' => 60,
+                'valueName' => 'кг',
+                'workouts' => [
+                    [
+                        'name' => 'Жим лежа x8',
+                        'description' => 'Перерыв 5 минут',
+                        'video' => 'url4'
+                    ],
+                    [
+                        'name' => 'Присяд x16',
+                        'description' => 'Перерыв 5 минут',
+                        'video' => 'url5'
+                    ],
+                    [
+                        'name' => 'Бег 1 км',
+                        'description' => 'В среднем темпе',
+                        'video' => 'url3'
+                    ]
+                ]
+            ],
+        "2"=>[
+            'index' => 2,
+            'description' => 'Описание уровня',
+            'valueMin' => 60,
+            'valueMax' => 80,
+            'valueName' => 'кг',
+            'workouts' => [
+                [
+                    'name' => 'Жим лежа x8',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url4'
+                ],
+                [
+                    'name' => 'Присяд x16',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url5'
+                ],
+                [
+                    'name' => 'Бег 1 км',
+                    'description' => 'В среднем темпе',
+                    'video' => 'url3'
+                ]
+            ]
+        ],
+        "3"=>[
+            'index' => 3,
+            'description' => 'Описание уровня',
+            'valueMin' => 80,
+            'valueMax' => 100,
+            'valueName' => 'кг',
+            'workouts' => [
+                [
+                    'name' => 'Жим лежа x8',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url4'
+                ],
+                [
+                    'name' => 'Присяд x16',
+                    'description' => 'Перерыв 5 минут',
+                    'video' => 'url5'
+                ],
+                [
+                    'name' => 'Бег 1 км',
+                    'description' => 'В среднем темпе',
+                    'video' => 'url3'
+                ]
+            ]
+        ]
+        ]
+    ];
+
+};
