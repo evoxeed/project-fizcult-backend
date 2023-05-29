@@ -26,6 +26,7 @@ class User extends Model implements UserInterface, AuthorizableContract
         'login',
         'first_name',
         'last_name',
+        'energy_type',
         'created_at',
         'updated_at',
         'password',

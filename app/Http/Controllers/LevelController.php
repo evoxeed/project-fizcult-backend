@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Response\Formatter\UserFormatter;
-use App\Http\Response\Formatter\LessonsFormatter;
+use App\Http\Response\Formatter\LevelFormatter;
 use App\UserInterface;
 use Laravel\Lumen\Routing\Controller;
-use App\Services\User\AllUserLessonsService;
+use App\Services\Level\LevelService;
 
 class LevelController extends Controller
 {
@@ -16,31 +15,22 @@ class LevelController extends Controller
      * 
      */
     public function __construct(
-    ) {
-        
-    }
+        private UserInterface $user,
+        private LevelFormatter $formatter
+    ) {}
 
-    public function level($skill, $level): array
+    public function level($skill, $level, LevelService $levelService): array
     {
-        return 
-        [
-            'level' => $this->levels[$skill][$level],
+        $level = $levelService->getLevelByIndex($this->user, $level, $skill);
+        return [
+            'level' => $this->formatter->format($level),
         ];
     }
 
-    public function get($skill): array
+    public function get($skill, LevelService $levelService): array
     {
-        if ($skill == 1) {
-            return [
-                'level' => $this->levels[1][1],
-            ];
-        }
-        elseif($skill=2)
-        {
-            return [
-                'level' => $this->levels[1][2],
-            ];
-        }
+        $level = $levelService->getLevelByIndex($this->user, $skill, $skill);
+        return $this->formatter->format($level);
     }
 
     private $levels = [
@@ -48,9 +38,6 @@ class LevelController extends Controller
             "1" => [
                 'index' => 1,
                 'description' => 'Описание уровня',
-                'valueMin' => 20,
-                'valueMax' => 100,
-                'valueName' => 'мин',
                 'workouts' => [
                     [
                         'name' => 'Челночный бег 5x20',

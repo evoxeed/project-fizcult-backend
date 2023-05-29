@@ -2,70 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Response\Formatter\UserFormatter;
-use App\Http\Response\Formatter\LessonsFormatter;
+use App\Http\Response\Formatter\SkillFormatter;
+use App\Models\Skill;
 use App\UserInterface;
+//use App\SkillInterface;
 use Laravel\Lumen\Routing\Controller;
-use App\Services\User\AllUserLessonsService;
+use App\Services\Skill\SkillService;
 
 class SkillController extends Controller
 {
     /**
-     *
-     * 
+     * @param SkillInterface $user
+     * @param SkillFormatter $formatter
      */
     public function __construct(
+        //private SkillInterface $skill,
+        private UserInterface $user,
+        private SkillFormatter $formatter
     ) {
     }
 
-    public function get(): array
+    public function get(SkillService $skillService): array
     {
+        $skills = $skillService->getSkillsForUser($this->user);
         return [
-            (object) [
-                'id' => 1,
-                'name' => 'Вынословость',
-                'valueName' => 'мин',
-                'levels' => [
-                    (object) [
-                        'index' => 1,
-                        'valueMin' => 20,
-                        'valueMax' => 100
-                    ],
-                    (object) [
-                        'index' => 2,
-                        'valueMin' => 18,
-                        'valueMax' => 20
-                    ],
-                    (object) [
-                        'index' => 3,
-                        'valueMin' => 15,
-                        'valueMax' => 18
-                    ]
-                ]
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'Сила',
-                'valueName' => 'кг',
-                'levels' => [
-                    (object) [
-                        'index' => 1,
-                        'valueMin' => 40,
-                        'valueMax' => 60
-                    ],
-                    (object) [
-                        'index' => 2,
-                        'valueMin' => 60,
-                        'valueMax' => 80
-                    ],
-                    (object) [
-                        'index' => 3,
-                        'valueMin' => 80,
-                        'valueMax' => 100
-                    ]
-                ]
-
-            ]
+            'skills' => $this->formatter->format($skills),
         ];
     }
 }
